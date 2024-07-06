@@ -1,0 +1,54 @@
+@startuml
+' General diagram of the design pattern Visitor
+' Highly inspired from https://refactoring.guru/design-patterns/visitor and Gof Book Visitor pages
+' Settings
+skinparam classAttributeIconSize 0
+scale 2
+hide empty members
+
+' TODO: plus de lien de dépendances ou autres ??
+
+' Content
+interface Visitor {
+    +visitA(e: ElementA)
+    +visitB(e: ElementB)
+}
+
+class ConcreteVisitorA implements Visitor {
+    +visitA(e: ElementA)
+    +visitB(e: ElementB)    
+}
+
+class ConcreteVisitorB implements Visitor {
+    +visitA(e: ElementA)
+    +visitB(e: ElementB)
+}
+
+interface Element {
+    +accept(v: Visitor)
+}
+class ElementA implements Element {
+    +accept(v: Visitor)
+    +featureA(): String
+}
+class ElementB implements Element {
+    +accept(v: Visitor)
+    +featureB(): String
+}
+
+class Client
+
+Client ->"*" Element: manage >
+' Client code example
+note "Collection<Element> elements = ...\nvar cv = new ConcreteVisitorA();\nfor (var el :  elements) {\n\tel.accept(cv);\n}" as clientcode
+
+note "v.visitA(this);" as dbldispatch
+note "e.featureA();" as dispatch
+
+ElementA - dbldispatch
+ConcreteVisitorA - dispatch
+
+clientcode -- Client
+
+' Element -[hidden]right-- Visitor
+@enduml

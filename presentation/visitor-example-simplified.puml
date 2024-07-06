@@ -1,0 +1,73 @@
+@startuml
+
+' Style
+skinparam classAttributeIconSize 0
+scale 2
+hide empty members
+
+
+' hacks
+' Circle -[hidden]- Triangle
+
+Player -- PlayerInteractionVisitor: handler >
+
+interface Interactable {
++ acceptInteraction(v: InteractionVisitor)
+}
+
+class Triangle {
++ acceptInteraction(v: InteractionVisitor)
+}
+
+interface Interactor {
++ interactWith(other: Interactable)
+}
+
+class Circle {
++ acceptInteraction(v: InteractionVisitor)
+}
+
+abstract class Entity {
+' - shape: MovableShape
+' - color: Color
+' - coordinates: DiscreteCoordinates
+' + getShape(): MovableShape
+' + getColor(): Color
+' + getCoordinates(): DiscreteCoordinates
+' # setCoordinates(coordinates: DiscreteCoordinates)
+' # setColor(color: Color)
+' # setShape(shape: MovableShape)
+' + draw(canvas: Graphics2D)
+}
+
+abstract class AbstractInteractionVisitor {
++ interactWith(circle: Circle)
++ interactWith(triangle: Triangle)
+}
+
+interface InteractionVisitor {
++ interactWith(circle: Circle)
++ interactWith(triangle: Triangle)
+}
+
+class Player {
++ interactWith(other: Interactable)
++ acceptInteraction(v: InteractionVisitor)
+}
+
+
+class PlayerInteractionVisitor {
++ interactWith(circle: Circle)
++ interactWith(triangle: Triangle)
+}
+
+
+
+Entity <|-- Triangle
+Entity <|-- Circle
+Interactable <|.. Entity
+InteractionVisitor <|.. AbstractInteractionVisitor
+Interactor <|.. Player
+Player +-- PlayerInteractionVisitor
+AbstractInteractionVisitor <|-- PlayerInteractionVisitor
+@enduml
